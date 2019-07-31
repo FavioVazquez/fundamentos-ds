@@ -1,0 +1,58 @@
+---
+title: "Gráficas - Parte 1"
+output: html_notebook
+---
+
+Cargue los paquetes en su sesión de R
+
+```{r}
+library(ggplot2)
+library(datos)
+```
+
+Un histograma usando `geom_histogram()` - 1 variable continua.Pruebe cambiar `precios` con otras variables, como:
+- `quilate`
+- `profundidad`
+- `tabla`
+
+```{r}
+ggplot(data = diamantes) +
+  geom_histogram(aes(quilate), color = "white", fill = "red", bins = 5) +
+  labs(y = "") +
+  theme_minimal()
+```
+
+Un diagrama de cajas - 1 variable continua y 1 variable discreta. Pruebe cambiar `precios` con otras variables, como:
+- `quilate`
+- `profundidad`
+- `tabla`
+
+Pruebe cambiar `corte` con otras variables, como:
+- `color`
+- `claridad`
+
+```{r}
+ggplot(data = diamantes) +
+  geom_boxplot(aes(color, quilate)) +
+  theme_minimal()
+```
+
+Agregemos color. Pruebe cambiar `claridad` con otras variables, como:
+- `color`
+- `corte`
+
+```{r}
+ggplot(data = diamantes) +
+  geom_point(aes(precio, quilate, color = claridad), alpha = 0.1) +
+  theme_dark() +
+  labs(title = "Precio sobre quilates por claridad")
+```
+
+Agregemos un modelo
+
+```{r}
+ggplot(data = diamantes, aes(precio, quilate)) +
+  geom_point(aes(color = claridad), alpha = 0.3) +
+  geom_smooth(method = "lm") +
+  theme_minimal()
+```

@@ -1,0 +1,55 @@
+---
+title: "Usos básicos"
+output: html_notebook
+---
+
+Instale dos paquetes de R
+
+```{r, eval = FALSE}
+install.packages("ggplot2")
+install.packages("datos")
+```
+
+Cargue los paquetes en su sesión de R
+
+```{r}
+library(ggplot2)
+library(datos)
+```
+
+Llame a la tabla: diamantes
+
+```{r}
+diamantes
+```
+
+Use View() para ver todos los datos dentro de diamantes
+
+
+```{r}
+View(diamantes)
+```
+
+str() devuelve la estructura de una variable
+
+```{r}
+str(diamantes)
+```
+
+Utilize `?` para ver la ayuda
+
+```{r}
+?diamantes
+```
+
+Carge diamantes dentro de una variable
+
+```{r}
+diamantes$precio
+```
+
+
+```{r}
+mis_diamantes <- diamantes$precio
+```
+

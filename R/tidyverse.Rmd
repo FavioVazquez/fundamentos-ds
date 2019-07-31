@@ -1,0 +1,99 @@
+---
+title: "Analyzar grados de escuela"
+output: html_notebook
+---
+
+```{r, include = FALSE}
+library(tidyverse)
+```
+
+## Importar
+
+```{r}
+archivo <- read_csv("datos/cuarto-grado.csv")
+```
+
+```{r}
+archivo
+```
+
+## Ordenar
+
+1. Separar el nombre del alumno en dos: 'primer' y 'apellido'
+```{r}
+archivo %>%
+  separate(nombre, into = c("apellido", "primer"))
+```
+
+2. Separar la fecha en tres: 'dia', 'mes' y 'año'
+```{r}
+archivo %>%
+  separate(nombre, into = c("apellido", "primer")) %>% 
+  separate(fecha, into = c("dia", "mes", "año")) #, convert = TRUE)
+```
+
+3. Juntar las columnas de 'matematica' e 'ingles'  en una sola llamada 'materia'
+```{r}
+archivo %>%
+  separate(nombre, into = c("apellido", "primer")) %>% 
+  separate(fecha, into = c("dia", "mes", "año"), convert = TRUE) %>% 
+  gather(materia, puntos, matematica, ingles)
+```
+
+4. Assigne los cambios a una variable llamada 'grados'
+```{r}
+grados <- archivo %>%
+  separate(nombre, into = c("apellido", "primer")) %>% 
+  separate(fecha, into = c("dia", "mes", "año"), convert = TRUE) %>% 
+  gather(materia, puntos, matematica, ingles)
+grados
+```
+
+## Entender (Transformar y Visualizar)
+
+¿Cual es el promedio actual por cada clase?
+
+```{r}
+grados %>%
+  group_by(materia) %>%
+  summarise(promedio = mean(puntos))
+```
+
+¿Cuales son los promedios de cada estudiante en matematica?
+
+```{r}
+grados %>%
+  filter(materia == "matematica") %>%
+  group_by(matricula, primer, apellido) %>%
+  summarise(promedio = mean(puntos))
+```
+
+¿Cuales son los promedios de cada estudiante en ingles?
+
+```{r}
+```
+
+¿Quienes tienen los mejores promedios en ingles?
+
+```{r}
+grados %>%
+  filter(materia == "ingles") %>%
+  group_by(matricula, primer, apellido) %>%
+  summarise(promedio = mean(puntos)) %>% 
+  arrange(desc(promedio)) %>%
+  ungroup() %>% 
+  mutate(puesto = row_number())
+```
+
+¿Quienes tienen los mejores tres mejores promedios en matemática?
+
+```{r}
+```
+
+
+```{r}
+grados %>% 
+  filter(materia == "ingles") %>% 
+  ggplot() +
+  geom_bar(aes(mes, puntos), stat = "summary", fun.y = "mean")
+```
